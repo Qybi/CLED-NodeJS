@@ -15,7 +15,6 @@
   "dependencies": {
     "@fastify/autoload": "^5.8.0",
     "@fastify/sensible": "^5.5.0",
-    "fastify": "^4.26.2",
-    "json-server": "^1.0.0-alpha.23"
+    "fastify": "^4.26.2"
   }
 }
