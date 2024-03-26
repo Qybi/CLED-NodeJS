@@ -1,0 +1,20 @@
+{
+  "name": "6-fastifyhttpserver",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node .",
+    "start:watch": "node --watch .",
+    "start:fake": "json-server --watch db.json"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "fastify": "^4.26.2",
+    "json-server": "^1.0.0-alpha.23"
+  }
+}

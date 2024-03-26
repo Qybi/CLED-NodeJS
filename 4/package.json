@@ -1,0 +1,19 @@
+{
+  "name": "4",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.mjs",
+  "_commentType" : "al posto di mettere il file di index come mjs, dichiaro il type a module per poter utilizzare la funzionalità di import/export",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cowsay": "^1.6.0"
+  }
+}
+
