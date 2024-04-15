@@ -47,17 +47,17 @@ export default async function (app, opts) {
     if (Object.keys(body).length === 0)
       throw new app.httpErrors.badRequest("empty body");
 
-    let query = "UPDATE todos SET # WHERE id = $1 RETURNING *;";
-    let params = [request.params.id];
+    let query = [];
+    let params = [];
+    let counter = 1;
 
     // cycling body keys to see which fields to update
-    Object.keys(body).forEach((k, counter) => {
-      query = query.replace("#", `${k} = $${counter+2}, #`);
+    for(let k of body) {
+      query.push(`${k} = $${++counter}`);
       params.push(body[k]);
-    });
-    // cleaning up the query string
-    query = query.replace(", #", "");
-    const res = await app.pg.query(query, params);
+    }
+
+    const res = await app.pg.query(`UPDATE todos SET ${query.join(', ')} WHERE id = $1 RETURNING *;`, params);
 
     if (res.rows.length === 0) throw new app.httpErrors.notFound("not found");
     reply.code(200);
