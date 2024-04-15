@@ -1,56 +1,72 @@
 export default async function (app, opts) {
   app.get("/", async (request, reply) => {
-    console.log(app.Franchino);
-    return app.db.todos;
+    // pg viene registrato dal plugin fastify-postgres
+    return (await app.pg.query("SELECT * FROM todos")).rows;
   });
 
   app.get("/:id", async (request, reply) => {
-    const match = app.db.todos.find((elm) => elm.id === +request.params.id);
+    // request.params.id recupera il parametro id dall'url della richiesta
+    const match = (
+      await app.pg.query("SELECT * from todos WHERE id = $1", [
+        request.params.id,
+      ])
+    ).rows[0];
     if (!match) throw new app.httpErrors.notFound("not found");
     return match;
   });
 
   app.post("/", async (request, reply) => {
     const body = request.body;
-    app.db.todos.push(body);
-    body.id = app.db.todos.length + 1;
+    const res = await app.pg.query(
+      "INSERT INTO todos (label, done) VALUES ($1, $2) RETURNING *;",
+      [body.label, body.done]
+    );
+
+    if (res.rows.length === 0)
+      throw new app.httpErrors.internalServerError("error inserting data");
+
     reply.code(201);
-    return body;
+
+    return res.rows[0];
   });
 
   app.put("/:id", async (request, reply) => {
-    let match = app.db.todos.find((elm) => elm.id === +request.params.id);
-    if (!match) throw new app.httpErrors.notFound("not found");
     const body = request.body;
-    match = { id: +request.params.id, ...body };
+    const res = await app.pg.query(
+      "UPDATE todos SET label = $1, done = $2 WHERE id = $3 RETURNING *;",
+      [body.label, body.done, request.params.id]
+    );
+
+    if (res.rows.length === 0) throw new app.httpErrors.notFound("not found");
     reply.code(200);
-    return match;
+    return res.rows[0];
   });
 
   app.patch("/:id", async (request, reply) => {
     const body = request.body;
-    const id = Number(request.params.id);
+    if (Object.keys(body).length === 0)
+      throw new app.httpErrors.badRequest("empty body");
 
-    const index = app.db.todos.findIndex((elm) => elm.id === id);
+    let query = "UPDATE todos SET # WHERE id = $1 RETURNING *;";
+    let params = [request.params.id];
 
-    if (index < 0) throw new app.httpErrors.notFound("not found");
-    let fromDb = app.db.todos[index];
-    // body.id = id;
-    // for (const k of body) {
-    //   fromDb[k] = body[k];
-    // }
+    Object.keys(body).forEach((k, counter) => {
+      query = query.replace("#", `${k} = $${counter+2}, #`);
+      params.push(body[k]);
+    });
+    query = query.replace(", #", "");
+    const res = await app.pg.query(query, params);
 
-    fromDb = { ...fromDb, ...body };
-
-    app.db.todos[index] = fromDb;
-    return body;
+    if (res.rows.length === 0) throw new app.httpErrors.notFound("not found");
+    reply.code(200);
+    return res.rows[0];
   });
 
   app.delete("/:id", async (request, reply) => {
     const id = Number(request.params.id);
-    const index = app.db.todos.findIndex((elm) => elm.id === id);
-    if (index < 0) throw new app.httpErrors.notFound("not found");
-    app.db.todos.splice(index, 1);
+    const res = await app.pg.query("DELETE FROM todos WHERE id = $1;", [id]);
+    if (res.rows.length === 0) throw new app.httpErrors.notFound("not found");
     reply.code(204);
+    return res.rows[0];
   });
 }

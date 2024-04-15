@@ -9,6 +9,15 @@ const __dirname = dirname(__filename);
 
 export async function createServer(app, opts) {
   
+  // sensible è un plugin che mi permette di gestire le risposte HTTP in modo più semplice
+  await app.register(fastifySensible);
+
+  // registro autoload per registrare i plugin per l'albero cartelle dentro plugins
+  await app.register(autoLoad, {
+    dir: join(__dirname, "./plugins"),
+    forceESM: true 
+  });
+
   // autoload è un plugin che mi permette di mappare automaticamente le routes a partire dall'albero cartelle
   await app.register(autoLoad, {
     dir: join(__dirname, "./routes"),
@@ -16,8 +25,6 @@ export async function createServer(app, opts) {
     forceESM: true // forza l'utilizzo degli import ESM
   });
 
-  // sensible è un plugin che mi permette di gestire le risposte HTTP in modo più semplice
-  await app.register(fastifySensible);
 
   app.ready(() => {
     console.log(app.printRoutes());
