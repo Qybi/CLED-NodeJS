@@ -50,10 +50,12 @@ export default async function (app, opts) {
     let query = "UPDATE todos SET # WHERE id = $1 RETURNING *;";
     let params = [request.params.id];
 
+    // cycling body keys to see which fields to update
     Object.keys(body).forEach((k, counter) => {
       query = query.replace("#", `${k} = $${counter+2}, #`);
       params.push(body[k]);
     });
+    // cleaning up the query string
     query = query.replace(", #", "");
     const res = await app.pg.query(query, params);
 
