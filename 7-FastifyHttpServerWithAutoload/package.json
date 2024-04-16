@@ -18,6 +18,7 @@
     "@fastify/sensible": "^5.5.0",
     "fastify": "^4.26.2",
     "fastify-plugin": "^4.5.1",
+    "fluent-json-schema": "^4.2.1",
     "pg": "^8.11.5"
   }
 }
