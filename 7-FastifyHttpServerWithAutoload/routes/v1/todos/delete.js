@@ -1,4 +1,4 @@
-import { paramSchema } from "../../../schemas/todo";
+import { paramSchema } from "../../../schemas/todo.js";
 
 export default async function (app, opts) {
   app.delete("/:id", { paramSchema: paramSchema } , async (request, reply) => {
