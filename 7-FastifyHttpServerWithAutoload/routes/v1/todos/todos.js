@@ -1,3 +1,5 @@
+// import { singleOrNotFound } from "../../../plugins/singleOrNotFound.js";
+
 export default async function (app, opts) {
   app.get("/", async (request, reply) => {
     // pg viene registrato dal plugin fastify-postgres
@@ -10,9 +12,8 @@ export default async function (app, opts) {
       await app.pg.query("SELECT * from todos WHERE id = $1", [
         request.params.id,
       ])
-    ).rows[0];
-    if (!match) throw new app.httpErrors.notFound("not found");
-    return match;
+    ).rows;
+    return app.singleOrNotFound(match);
   });
 
   app.post("/", async (request, reply) => {
@@ -48,20 +49,17 @@ export default async function (app, opts) {
       throw new app.httpErrors.badRequest("empty body");
 
     let query = [];
-    let params = [];
+    let params = [request.params.id];
     let counter = 1;
 
     // cycling body keys to see which fields to update
-    for(let k of body) {
+    for(let k of Object.keys(body)) {
       query.push(`${k} = $${++counter}`);
       params.push(body[k]);
     }
-
     const res = await app.pg.query(`UPDATE todos SET ${query.join(', ')} WHERE id = $1 RETURNING *;`, params);
 
-    if (res.rows.length === 0) throw new app.httpErrors.notFound("not found");
-    reply.code(200);
-    return res.rows[0];
+    return app.singleOrNotFound(res.rows);
   });
 
   app.delete("/:id", async (request, reply) => {
