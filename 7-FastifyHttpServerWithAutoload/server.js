@@ -4,6 +4,7 @@ import fastifySensible from "@fastify/sensible";
 import { fileURLToPath } from "node:url"; //moduli di node.js
 import { dirname, join } from "node:path";
 import fastifySwagger from "@fastify/swagger";
+import fastifySwaggerUi from "@fastify/swagger-ui";
 
 const __filename = fileURLToPath(import.meta.url);  // import.meta.url è il modo per ottenere il percorso 
 // del file in uso corrente in ES6
@@ -15,6 +16,9 @@ export async function createServer() {
   });
 
   await app.register(fastifySwagger);
+  await app.register(fastifySwaggerUi, {
+    routePrefix: "/swagger"
+  });
 
   // sensible è un plugin che mi permette di gestire le risposte HTTP in modo più semplice
   await app.register(fastifySensible);
