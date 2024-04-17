@@ -3,6 +3,8 @@ import fp from "fastify-plugin";
 import fastifyPostgres from "@fastify/postgres";
 import pg from "pg";
 
+// fastify plugin mi permette di registrare il plugin dovunque voglia, senza rispettare l'ordine di caricamento
+
 const { Client } = pg;
 
 async function dal(app, opts) {
