@@ -1,0 +1,23 @@
+{
+  "name": "8-redoingbymyself",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node .",
+    "start:watch": "node --watch ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@fastify/autoload": "^5.8.0",
+    "@fastify/postgres": "^5.2.2",
+    "@fastify/sensible": "^5.5.0",
+    "fastify": "^4.26.2",
+    "fastify-plugin": "^4.5.1",
+    "pg": "^8.11.5",
+    "pino-pretty": "^11.0.0"
+  }
+}
