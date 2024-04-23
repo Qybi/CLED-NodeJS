@@ -1,6 +1,7 @@
 <h1>Server Side Rendering</h1>
 <div class="row m-4">
   <div class="col-8">
+    <a href="/create" class="btn btn-success mb-1">Crea</a>
     <ul class="list-group">
       <!-- <% if (fruits.length === 0) { %>
       <h3>non ci sono frutti</h3>
@@ -22,8 +23,15 @@
       >
         <span class="<%= t.done ? 'completed' : '' %>"><%= t.label %></span>
         <div>
-          <a href='/?insert="null"' class="btn btn-primary">&checkmark;</a>
-          <a href="/?delete=<%= t.id %>" class="btn btn-danger">&times;</a>
+          <a href='/edit?id=<%= t.id %>' class="btn btn-primary">
+            <i class="fa fa-pen"></i>
+          </a>
+          <a href='/?insert="null"' class="btn btn-primary">
+            <i class="fa fa-plus"></i>
+          </a>
+          <a href="/?delete=<%= t.id %>" class="btn btn-danger">
+            <i class="fa fa-times"></i>
+          </a>
         </div>
       </li>
       <% } %> <% } %>
