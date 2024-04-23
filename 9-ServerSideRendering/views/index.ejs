@@ -1,0 +1,32 @@
+<h1>Server Side Rendering</h1>
+<div class="row m-4">
+  <div class="col-8">
+    <ul class="list-group">
+      <!-- <% if (fruits.length === 0) { %>
+      <h3>non ci sono frutti</h3>
+      <% } else { %> <% for (let f of fruits) { %>
+      <li class="list-group-item" style="display: flex; justify-content: space-between;">
+        <%= f %>
+        <div>
+          <button class="btn btn-primary">&checkmark;</button>
+          <button class="btn btn-danger" >&times;</button>
+        </div>
+      </li>
+      <% } %> <% } %>  -->
+      <% if (todos.length === 0) { %>
+      <h3>non ci sono cose da fare</h3>
+      <% } else { %> <% for (let t of todos) { %>
+      <li
+        class="list-group-item"
+        style="display: flex; justify-content: space-between"
+      >
+        <span class="<%= t.done ? 'completed' : '' %>"><%= t.label %></span>
+        <div>
+          <a href='/?insert="null"' class="btn btn-primary">&checkmark;</a>
+          <a href="/?delete=<%= t.id %>" class="btn btn-danger">&times;</a>
+        </div>
+      </li>
+      <% } %> <% } %>
+    </ul>
+  </div>
+</div>
