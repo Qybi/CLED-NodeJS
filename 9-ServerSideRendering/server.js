@@ -25,7 +25,10 @@ export default async function createServer() {
   });
 
   await app.register(fastifyCookie, {
-    secret: "asbuifsdvfiysadvfuasdgfbsadoiufvuiods"
+    secret: "asbuifsdvfiysadvfuasdgfbsadoiufvuiods",
+    parseOptions: {
+      httpOnly: true // non accessibile da javascript
+    }
   })
   
   // espongo url per i file statici, root indica il file system path, prexix indica il path url
