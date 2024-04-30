@@ -9,11 +9,14 @@ import ejs from "ejs";
 import fastifyPostgres from "@fastify/postgres";
 import fastifyFormbody from "@fastify/formbody";
 import fastifyCookie from "@fastify/cookie";
+import fastifySession from "@fastify/session";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const fruits = ["Apple", "Banana", "Cherry", "Date", "Elderberry", "Fig"];
+
+const sessions = [];
 
 export default async function createServer() {
   const app = fastify({
@@ -27,10 +30,15 @@ export default async function createServer() {
   await app.register(fastifyCookie, {
     secret: "asbuifsdvfiysadvfuasdgfbsadoiufvuiods",
     parseOptions: {
-      httpOnly: true // non accessibile da javascript
-    }
-  })
-  
+      httpOnly: true, // non accessibile da javascript
+    },
+  });
+
+  // serve per gestire le sessioni, in modo da poter salvare dati tra le richieste
+  await app.register(fastifySession, {
+    secret: 'fbuoesfbsoifbdsifbdsiogvbgoergfbierufvbauifvbeihfvie'
+  });
+
   // espongo url per i file statici, root indica il file system path, prexix indica il path url
   await app.register(fastifyStatic, {
     root: join(__dirname, "assets"),
@@ -50,13 +58,19 @@ export default async function createServer() {
     connectionString: "postgres://postgres:Vmware1!@localhost:5432/cled",
   });
 
+  // serve per decriptare i body delle richieste post. (content-type: application/x-www-form-urlencoded)
   await app.register(fastifyFormbody);
-
 
   // ================= ROUTES =================
   {
     app.get("/", async (req, res) => {
       app.log.info(req.unsignCookie("pepega"));
+      
+      let session = undefined;
+      if (req.cookies.uuid) {
+        const uuid = req.unsignCookie(req.cookies.uuid).value;
+        session = sessions.find((x) => x.uuid === uuid);
+      }      
 
       if (req.query.delete) {
         console.warn(req.query.delete);
@@ -82,6 +96,10 @@ export default async function createServer() {
         fruits: [],
         todos: result.rows,
       });
+    });
+
+    app.get('/login', async (req, res) => {
+      return res.view('./views/login.ejs');
     });
 
     app.get("/edit", async (req, res) => {
@@ -126,15 +144,35 @@ export default async function createServer() {
       //   "pepega=pepega; HttpOnly; SameSite=Strict; Secure"
       // );
       // fastify
-      res.setCookie("isAdmin", { signed: true })
+      res.setCookie("isAdmin", { signed: true });
       res.setCookie("pepega", "pepega", {
         httpOnly: true,
         sameSite: "Strict",
         secure: true,
         signed: true,
-        expires: new Date(Date.now() + 1000 * 60 * 60 * 24)
+        expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
       });
       return res.view("./views/create.ejs");
+    });
+
+    app.post("/login", async (req, res) => {
+      const username = req.body.username;
+      //id univoco - parte commentata dopo aver aggiunto fastify/session
+      // const id = randomUUID();
+      // const session = {
+      //   uuid,
+      //   username,
+      // };
+
+      // sessions.push(session);
+
+      // res.cookie("uuid", uuid, { signed: true });
+      app.session.user = {
+        username: username,
+        pippo: 'ciao'
+      };
+      
+      res.redirect("/");
     });
 
     app.post("/create", async (req, res) => {
