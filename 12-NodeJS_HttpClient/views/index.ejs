@@ -1,0 +1,18 @@
+<div class="row">
+  <div class="col-12">
+    <h1 class="text-center">Cocktails</h1>
+    <div class="row">
+      <% for(let c of cocktails) { %>
+      <div class="col-3">
+        <div class="card">
+          <img class="card-img-top" src="<%= c.strDrinkThumb %>" alt="Card image cap" />
+          <div class="card-body">
+            <a href="/detail?id=<%= c.idDrink %>" class="card-title"><%= c.strDrink %></a>
+            <!-- <div class="card-text"><%= c.description %></div> -->
+          </div>
+        </div>
+      </div>
+      <% } %>
+    </div>
+  </div>
+</div>
