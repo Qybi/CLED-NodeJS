@@ -1,0 +1,25 @@
+{
+  "name": "api-ssr",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "start:watch": "node --watch index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@fastify/formbody": "^7.4.0",
+    "@fastify/static": "^7.0.3",
+    "@fastify/view": "^9.1.0",
+    "ejs": "^3.1.10",
+    "fastify": "^4.26.2",
+    "fastify-plugin": "^4.5.1",
+    "pino-pretty": "^11.0.0",
+    "undici": "^6.15.0"
+  }
+}

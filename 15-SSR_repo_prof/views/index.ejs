@@ -1,0 +1,11 @@
+
+<div class="container">
+    <% for( const d of drinks) { %>
+        <div class="item">
+            <img src="<%= d.strDrinkThumb %>"/>
+            <div>
+                <a href="/detail?id=<%= d.idDrink %>"><%= d.strDrink %></a>
+            </div>
+        </div>
+    <% } %>
+</div>

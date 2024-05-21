@@ -1,0 +1,13 @@
+<div class="detail">
+    <img src="<%= drink.strDrinkThumb %>"/>
+    <div>
+        <h2><%= drink.strDrink %></h2>
+        <p>Istruzioni: <%= drink.strInstructionsIT %></p>
+        <p>Ingredienti: </p>
+        <ul>
+            <% for(const i of drink.ingredients) { %>
+                <li><%= i %></li>
+            <% } %>
+        </ul>
+    </div>
+</div>

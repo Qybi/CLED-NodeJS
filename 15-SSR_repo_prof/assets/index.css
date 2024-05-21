@@ -1,0 +1,41 @@
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    position: absolute;
+    justify-content: center;
+    inset: 0 0 0 0;
+}
+
+.item {
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    align-items: center;
+    border: 1px solid #aaa;
+    margin: 10px;
+}
+
+.item > img {
+    width: 100%;
+}
+
+.item > div {
+    font-size: 1.2rem;
+    padding: 20px 0;
+}
+
+.detail {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.detail > * {
+    margin: 30px;
+}
