@@ -1,0 +1,26 @@
+{
+  "name": "esame_trivillin_raffaele",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node .",
+    "start:watch": "node --watch ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@fastify/autoload": "^5.8.2",
+    "@fastify/postgres": "^5.2.2",
+    "@fastify/sensible": "^5.6.0",
+    "fastify": "^4.27.0",
+    "fastify-plugin": "^4.5.1",
+    "fluent-json-schema": "^4.2.1",
+    "lodash": "^4.17.21",
+    "pg": "^8.11.5",
+    "undici": "^6.18.1"
+  }
+}
